@@ -5,7 +5,7 @@ Watch live streams of all NHL hockey games, for free, on your Mac.
 
 ## Install / Use
 
-Download [Watch Hockey.app.zip](https://raw.github.com/mismith/watch-hockey/master/Watch%20Hockey.app.zip) (right-click &gt; Save As&hellip;), unzip, and drag into your Applications folder.
+Download [Watch Hockey.app.zip](https://raw.github.com/mismith/watch-hockey/master/Watch%20Hockey.app.zip), unzip, and drag into your Applications folder.
 
 Launch it to see a list of the day's available live feeds. Then choose the bitrate/quality you prefer.
 
