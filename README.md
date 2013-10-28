@@ -9,6 +9,12 @@ Download [Watch Hockey.app.zip](https://raw.github.com/mismith/watch-hockey/mast
 
 Launch it to see a list of the day's available live feeds. Then choose the bitrate/quality you prefer.
 
+#### Important
+If you get an "unidentified developer" error like this:<br>
+![Unidentified Developer error](http://cdn.imore.com/sites/imore.com/files/styles/large/public/field/image/2012/08/Gatekeeper%20can%27t%20open_0.jpeg)<br>
+Then you will need to **right-click** the app and select **Open** the first time you use it. See [this article](http://www.imore.com/how-open-apps-unidentified-developer-os-x-mountain-lion) for why.
+
+
 ## Notes
 
 1. Mac only. QuickTime Player X required.
