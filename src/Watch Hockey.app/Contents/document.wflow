@@ -121,8 +121,6 @@ echo $games</string>
 				<string>52FFD848-1ACD-4F8F-9F3F-288E13EB8D1F</string>
 				<key>ShowWhenRun</key>
 				<false/>
-				<key>StartAction</key>
-				<false/>
 				<key>UUID</key>
 				<string>20BC1A55-2D80-4DC1-9AA4-44241D3F3767</string>
 				<key>UnlocalizedApplications</key>
@@ -197,12 +195,10 @@ echo $games</string>
 						<string>4</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>505.500000:909.000000</string>
+				<string>505.500000:576.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -250,7 +246,7 @@ echo $games</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>to split(aString, delimiter)	set retVal to {}	set prevDelimiter to AppleScript's text item delimiters	set AppleScript's text item delimiters to {delimiter}	set retVal to every text item of aString	set AppleScript's text item delimiters to prevDelimiter	return retValend spliton list_position(this_item, this_list)	repeat with i from 1 to the count of this_list		if item i of this_list is this_item then return i	end repeat	return 0end list_positionon replace_chars(this_text, search_string, replacement_string)	set AppleScript's text item delimiters to the search_string	set the item_list to every text item of this_text	set AppleScript's text item delimiters to the replacement_string	set this_text to the item_list as string	set AppleScript's text item delimiters to ""	return this_textend replace_charson run {input, parameters}		set userFriendlyNames to {}	set feedURLs to {}		repeat with game in split(item 1 of input, ",")		set pieces to split(game, " ")		set gametime to item 1 of pieces		set t1loc to item 2 of pieces		set t1name to item 3 of pieces		set t1feed to item 4 of pieces		set t2loc to item 5 of pieces		set t2name to item 6 of pieces		set t2feed to item 7 of pieces				set loc to "v"		set loc2 to "@"		if t1loc is not "Home" then			set loc to "@"			set loc2 to "v"		end if		set end of userFriendlyNames to gametime &amp; " - " &amp; t1name &amp; " (" &amp; loc &amp; " " &amp; t2name &amp; ")"		set end of feedURLs to t1feed		set end of userFriendlyNames to gametime &amp; " - " &amp; t2name &amp; " (" &amp; loc2 &amp; " " &amp; t1name &amp; ")"		set end of feedURLs to t2feed	end repeat		set selectedFeeds to choose from list userFriendlyNames with prompt "Which feed(s) would you like to watch?" with multiple selections allowed	set selectedBitrate to choose from list {"400", "800", "1200", "1600", "2400", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {"3000"}	repeat with i from 1 to the length of userFriendlyNames		if selectedFeeds contains item i of userFriendlyNames then			set feedURL to item i of feedURLs			set feedURL to replace_chars(feedURL, "_3000.", "_" &amp; selectedBitrate &amp; ".")						tell application "QuickTime Player"				activate				open URL feedURL			end tell		end if	end repeat	end run</string>
+					<string>to split(aString, delimiter)	set retVal to {}	set prevDelimiter to AppleScript's text item delimiters	set AppleScript's text item delimiters to {delimiter}	set retVal to every text item of aString	set AppleScript's text item delimiters to prevDelimiter	return retValend spliton list_position(this_item, this_list)	repeat with i from 1 to the count of this_list		if item i of this_list is this_item then return i	end repeat	return 0end list_positionon replace_chars(this_text, search_string, replacement_string)	set AppleScript's text item delimiters to the search_string	set the item_list to every text item of this_text	set AppleScript's text item delimiters to the replacement_string	set this_text to the item_list as string	set AppleScript's text item delimiters to ""	return this_textend replace_charson run {input, parameters}		set userFriendlyNames to {}	set feedURLs to {}		repeat with game in split(item 1 of input, ",")		set pieces to split(game, " ")		set gametime to item 1 of pieces		set t1loc to item 2 of pieces		set t1name to item 3 of pieces		set t1feed to item 4 of pieces		set t2loc to item 5 of pieces		set t2name to item 6 of pieces		set t2feed to item 7 of pieces				set loc to "v"		set loc2 to "@"		if t1loc is not "Home" then			set loc to "@"			set loc2 to "v"		end if		set end of userFriendlyNames to gametime &amp; " - " &amp; t1name &amp; " (" &amp; loc &amp; " " &amp; t2name &amp; ")"		set end of feedURLs to t1feed		set end of userFriendlyNames to gametime &amp; " - " &amp; t2name &amp; " (" &amp; loc2 &amp; " " &amp; t1name &amp; ")"		set end of feedURLs to t2feed	end repeat		set selectedFeeds to choose from list userFriendlyNames with prompt "Which feed(s) would you like to watch?" with multiple selections allowed	if (count of selectedFeeds) is greater than 0 then		set selectedBitrate to choose from list {"400", "800", "1200", "1600", "2400", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {"3000"}		repeat with i from 1 to the length of userFriendlyNames			if selectedFeeds contains item i of userFriendlyNames then				set feedURL to item i of feedURLs				set feedURL to replace_chars(feedURL, "_3000.", "_" &amp; selectedBitrate &amp; ".")								tell application "QuickTime Player"					activate					open URL feedURL				end tell			end if		end repeat	end if	end run</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -276,8 +272,6 @@ echo $games</string>
 				</array>
 				<key>OutputUUID</key>
 				<string>8BC6819D-8DEE-4C77-BC4D-FD8DE0C05782</string>
-				<key>StartAction</key>
-				<false/>
 				<key>UUID</key>
 				<string>CBB7AC12-E6D4-4392-99AC-D61818D5E9F4</string>
 				<key>UnlocalizedApplications</key>
@@ -305,12 +299,10 @@ end run</string>
 						<string>0</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>505.500000:391.000000</string>
+				<string>505.500000:393.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -320,7 +312,7 @@ end run</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>B4B30DB0-24E4-4B10-BF0C-A8168A568CD6</key>
+		<key>1DEA1BEC-3DB8-4FB0-B226-CD218F1C1BA5</key>
 		<dict>
 			<key>from</key>
 			<string>20BC1A55-2D80-4DC1-9AA4-44241D3F3767 - 20BC1A55-2D80-4DC1-9AA4-44241D3F3767</string>

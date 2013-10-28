@@ -49,17 +49,19 @@ on run {input, parameters}
 	end repeat
 	
 	set selectedFeeds to choose from list userFriendlyNames with prompt "Which feed(s) would you like to watch?" with multiple selections allowed
-	set selectedBitrate to choose from list {"400", "800", "1200", "1600", "2400", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {"3000"}
-	repeat with i from 1 to the length of userFriendlyNames
-		if selectedFeeds contains item i of userFriendlyNames then
-			set feedURL to item i of feedURLs
-			set feedURL to replace_chars(feedURL, "_3000.", "_" & selectedBitrate & ".")
-			
-			tell application "QuickTime Player"
-				activate
-				open URL feedURL
-			end tell
-		end if
-	end repeat
+	if (count of selectedFeeds) is greater than 0 then
+		set selectedBitrate to choose from list {"400", "800", "1200", "1600", "2400", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {"3000"}
+		repeat with i from 1 to the length of userFriendlyNames
+			if selectedFeeds contains item i of userFriendlyNames then
+				set feedURL to item i of feedURLs
+				set feedURL to replace_chars(feedURL, "_3000.", "_" & selectedBitrate & ".")
+				
+				tell application "QuickTime Player"
+					activate
+					open URL feedURL
+				end tell
+			end if
+		end repeat
+	end if
 	
 end run
