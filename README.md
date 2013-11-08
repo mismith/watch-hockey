@@ -19,4 +19,4 @@ Then you will need to **right-click** the app and select **Open** the first time
 
 1. Mac only. QuickTime Player X required.
 2. This app is not malware nor does it do anything other than stated. You can check the `/src` folder to see what code it runs, or open up the `.app` in Automator to inspect and/or tweak it yourself.
-3. This app does not host or provide the feeds themselves, nor is it affiliated with their provider—it's simply a small wrapper for loading URLs into QuickTime.
+3. This app does not host or provide the feeds themselves, nor is it affiliated with [their generous provider](http://dnalloheoj.com/)—it's simply a small wrapper for loading URLs into QuickTime.
