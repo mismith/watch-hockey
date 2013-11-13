@@ -59,31 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>i=0;
-games="";
-game="";
-
-for str in $(curl -s http://dnalloheoj.com/nhl/log.txt);
-do
-	j=$((i%14));
-	
-	case $j in
-		2) game="$str";;
-		5 | 10) str=$(sed "s/://" &lt;&lt;&lt; $str); game="$game $str";;
-		6 | 8 | 11) game="$game $str";;
-		13) game="$game $str";
-			if [ "$games" == "" ]; then
-				games="$game"
-			else
-				games="$games,$game"
-			fi
-			;;
-	esac;
-	
-	let i=i+1;
-done
-
-echo $games</string>
+					<string>curl -s http://dnalloheoj.com/nhl/log.txt | sed -E "s/^.*\. $|^\/\/ [^ ]+ | ET \/\/$//g; s/ @ |: /,/g" | tr '\n' ',' | sed -E 's/^,*//g; s/,*$//g; s/,,,/|/g'</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -198,7 +174,7 @@ echo $games</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.500000:554.000000</string>
+				<string>745.500000:871.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -246,7 +222,7 @@ echo $games</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>to split(aString, delimiter)	set retVal to {}	set prevDelimiter to AppleScript's text item delimiters	set AppleScript's text item delimiters to {delimiter}	set retVal to every text item of aString	set AppleScript's text item delimiters to prevDelimiter	return retValend spliton list_position(this_item, this_list)	repeat with i from 1 to the count of this_list		if item i of this_list is this_item then return i	end repeat	return 0end list_positionon replace_chars(this_text, search_string, replacement_string)	set AppleScript's text item delimiters to the search_string	set the item_list to every text item of this_text	set AppleScript's text item delimiters to the replacement_string	set this_text to the item_list as string	set AppleScript's text item delimiters to ""	return this_textend replace_charson run {input, parameters}		set userFriendlyNames to {}	set feedURLs to {}		repeat with game in split(item 1 of input, ",")		set pieces to split(game, " ")		set gametime to item 1 of pieces		set t1loc to item 2 of pieces		set t1name to item 3 of pieces		set t1feed to item 4 of pieces		set t2loc to item 5 of pieces		set t2name to item 6 of pieces		set t2feed to item 7 of pieces				set loc to "v"		set loc2 to "@"		if t1loc is not "Home" then			set loc to "@"			set loc2 to "v"		end if		set end of userFriendlyNames to gametime &amp; " - " &amp; t1name &amp; " (" &amp; loc &amp; " " &amp; t2name &amp; ")"		set end of feedURLs to t1feed		set end of userFriendlyNames to gametime &amp; " - " &amp; t2name &amp; " (" &amp; loc2 &amp; " " &amp; t1name &amp; ")"		set end of feedURLs to t2feed	end repeat		set selectedFeeds to choose from list userFriendlyNames with prompt "Which feed(s) would you like to watch?" with multiple selections allowed	if (count of selectedFeeds) is greater than 0 then		set selectedBitrate to choose from list {"400", "800", "1600", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {"800"}		if (count of selectedBitrate) is 1 then			repeat with i from 1 to the length of userFriendlyNames				if selectedFeeds contains item i of userFriendlyNames then					set feedURL to item i of feedURLs					set feedURL to replace_chars(feedURL, "_3000.", "_" &amp; selectedBitrate &amp; ".")										tell application "QuickTime Player"						activate						open URL feedURL					end tell				end if			end repeat		end if	end if	end run</string>
+					<string>-- helper functionsto split(aString, delimiter)	set retVal to {}	set prevDelimiter to AppleScript's text item delimiters	set AppleScript's text item delimiters to {delimiter}	set retVal to every text item of aString	set AppleScript's text item delimiters to prevDelimiter	return retValend spliton replace_chars(this_text, search_string, replacement_string)	set AppleScript's text item delimiters to the search_string	set the item_list to every text item of this_text	set AppleScript's text item delimiters to the replacement_string	set this_text to the item_list as string	set AppleScript's text item delimiters to ""	return this_textend replace_charson run {input, parameters}		set propertyListPath to "~/Library/Preferences/com.mismith.watchhockey.plist"	set userFriendlyNames to {}	set feedURLs to {}		-- turn shell script output into applescript variables	repeat with game in split(item 1 of input, "|")		set pieces to split(game, ",")				if (count of pieces) is 7 then			--set t1code to item 6 of pieces			--set t2code to item 4 of pieces						set t1feed to item 7 of pieces			set t2feed to item 5 of pieces						set end of feedURLs to t1feed			set end of feedURLs to t2feed		end if				set gametime to item 1 of pieces		set t1name to item 2 of pieces		set t2name to item 3 of pieces				set userFriendlyName to gametime &amp; " - " &amp; t1name &amp; " (@ " &amp; t2name &amp; ")"		if (count of pieces) is not 7 then set userFriendlyName to "Available around " &amp; userFriendlyName		set end of userFriendlyNames to userFriendlyName				set userFriendlyName to gametime &amp; " - " &amp; t2name &amp; " (@ " &amp; t1name &amp; ")"		if (count of pieces) is not 7 then set userFriendlyName to "Available around " &amp; userFriendlyName		set end of userFriendlyNames to userFriendlyName	end repeat		-- handle user interaction	if (count of userFriendlyNames) is greater than 0 then				-- prompt with list of available feeds		set selectedFeeds to choose from list userFriendlyNames with prompt "Which feed(s) would you like to watch?" with multiple selections allowed		if (count of selectedFeeds) is greater than 0 then						-- prompt with list of available bitrates			set defaultBitrate to "3000"			try				-- load default bitrate, if present				tell application "System Events"					tell property list file propertyListPath						tell contents							set defaultBitrate to value of property list item "defaultBitrate"						end tell					end tell				end tell			end try			set selectedBitrate to choose from list {"400", "800", "1600", "3000", "4500"} with prompt "What bitrate do you want (kbps)?" default items {defaultBitrate}			if (count of selectedBitrate) is 1 then								-- save selected bitrate as default for next time				tell application "System Events"					-- create an empty property list dictionary item					set the parent_dictionary to make new property list item with properties {kind:record}					-- create new property list file using the empty dictionary list item as contents					set this_plistfile to make new property list file with properties {contents:parent_dictionary, name:propertyListPath}					-- add new property list items of each of the supported types					make new property list item at end of property list items of contents of this_plistfile with properties {kind:string, name:"defaultBitrate", value:selectedBitrate}				end tell								-- open all the feeds in quicktime				repeat with i from 1 to the length of userFriendlyNames					if selectedFeeds contains item i of userFriendlyNames then						if (count of feedURLs) is greater than or equal to i then							set feedURL to item i of feedURLs							set feedURL to replace_chars(feedURL, "_3000.", "_" &amp; selectedBitrate &amp; ".")														tell application "QuickTime Player"								activate								open URL feedURL							end tell						end if					end if				end repeat							end if		end if	else		display alert "Either something went wrong or there aren't any games streaming right now. Check back up to 15 minutes before game time."	end if	end run</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -302,7 +278,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.500000:371.000000</string>
+				<string>745.500000:688.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -312,7 +288,7 @@ end run</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>18B55913-1E34-4A97-A426-FC6B74364392</key>
+		<key>45C4215F-8899-493B-8CB1-111EA53F16FC</key>
 		<dict>
 			<key>from</key>
 			<string>20BC1A55-2D80-4DC1-9AA4-44241D3F3767 - 20BC1A55-2D80-4DC1-9AA4-44241D3F3767</string>
